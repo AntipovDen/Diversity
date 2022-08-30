@@ -40,7 +40,7 @@ for i in x:
         y_raw.append(j)
 
 plt.plot(x, y, 'bo-')
-plt.plot(x, y_med, 'ro-')
+plt.plot(x, y_med, 'ko-')
 plt.plot(x, y1, 'ro-')
 plt.plot(x, y2, 'ro-')
 # plt.plot(x_raw, y_raw, 'go')

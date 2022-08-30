@@ -16,15 +16,17 @@ class GSEMO:
     def mutate(x):
         x1 = x.copy()
         n = len(x)
-        i = randint(0, n - 1)
-        x1[i] = 1 - x1[i]
-        # bits_changed = 0
-        # for i in range(n):
-        #     if random() * n < 1:
-        #         x1[i] = 1 - x1[i]
-        #         bits_changed += 1
+        # i = randint(0, n - 1)
+        # x1[i] = 1 - x1[i]
+        # # bits_changed = 0subplots
+        for i in range(n):
+            if random() * n < 1:
+                x1[i] = 1 - x1[i]
+                # bits_changed += 1
         return x1
 
+
+    ### This iteration aassumes that all fitness levels are already filled
     def iteration(self, logfile):
         f1x = randint(0, len(self.pop) - 1)
         x = self.pop[f1x]
@@ -53,18 +55,18 @@ class GSEMO:
                 self.pop[f1x1] = x1
                 self.frequencies = new_frequencies
         ### Uncomment if want to log the frequency vector at each iteration
-        #     for i in self.frequencies:
-        #         logfile.write("{} ".format(i))
-        # logfile.write("\n")
-        # logfile.flush()
+            for i in self.frequencies:
+                logfile.write("{} ".format(i))
+        logfile.write("\n")
+        logfile.flush()
 
     def run(self, logfile):
         i = 0
         while sum(i * (len(self.pop) - i) for i in self.frequencies) < (len(self.pop) ** 2 / 4) * (len(self.pop) - 1):
             self.iteration(logfile)
             i += 1
-        logfile.write("Finished: {} iterations\n".format(i))
-        logfile.flush()
+        # logfile.write("Finished: {} iterations\n".format(i))
+        # logfile.flush()
         return i
 
 
@@ -88,40 +90,15 @@ def run_thread(thread_number):
                 f.write("Run {}\n".format(i))
                 GSEMO(pop, "Frequencies").run(f)
 
-with Pool(8) as pool:
-    pool.map(run_thread, list(range(1, 9)))
-# n = 17
-# a = 0
-# for _ in range(100):
-#     pop = [[1] * i + [0] * (n - i) for i in range(n + 1)]
-#     with open("log.txt", 'w') as f:
-#         a = a + GSEMO(pop, "Hamming").run(f)
-#
-# print(a / 100)
 
-# with open("output.log", 'r') as f:
-#     runtimes = [float(s) for s in f.readline().split()]
-# problem_sizes = [2 ** i + 1 for i in range(4, 9)]
-# for i in range(len(runtimes)):
-#     runtimes[i] = runtimes[i] / (problem_sizes[i] ** 2 * log(problem_sizes[i]))
-# plt.plot(problem_sizes, runtimes, 'bo-')
-# plt.show()
+def run_threads():
+    with Pool(8) as pool:
+        pool.map(run_thread, list(range(1, 9)))
+
+def logged_run(n = 65):
+    pop = [[1] * i + [0] * (n - i) for i in range(n + 1)]
+    with open('log.txt', 'w') as logfile:
+        GSEMO(pop).run(logfile)
 
 
-# animation
-# fig, ax = plt.subplots()
-# xdata, ydata = list(range(n)), []
-# ln, = plt.plot([], [], 'ro')
-#
-# def init():
-#     ax.set_xlim(-1, n + 1)
-#     ax.set_ylim(-1, n + 2)
-#     return ln,
-#
-# def update(frame):
-#     ydata = frame
-#     ln.set_data(xdata, ydata)
-#     return ln,
 
-# ani = FuncAnimation(fig, update, frames=log, init_func=init, blit=True, interval=1)
-# plt.show()
