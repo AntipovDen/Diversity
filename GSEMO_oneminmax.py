@@ -5,6 +5,11 @@ from random import randint, random
 from multiprocessing import  Pool
 
 
+# hamming distance for two bit strings
+def hamming_distance(x1, x2):
+    return sum([x1[i] != x2[i] for i in range(len(x1))])
+
+
 class GSEMO:
     def __init__(self, pop, diversity_measure="Hamming"):
         self.pop = pop
@@ -54,9 +59,13 @@ class GSEMO:
             if ham_old <= ham_new:
                 self.pop[f1x1] = x1
                 self.frequencies = new_frequencies
+                ham_old = ham_new  # for logging purposes
         ### Uncomment if want to log the frequency vector at each iteration
-            for i in self.frequencies:
-                logfile.write("{} ".format(i))
+            logfile.write("{} ".format(ham_old))
+            for i in range(len(self.pop) - 1):
+                logfile.write("{} ".format(hamming_distance(self.pop[i], self.pop[i + 1])))
+            # for i in self.frequencies:
+            #     logfile.write("{} ".format(i))
         logfile.write("\n")
         logfile.flush()
 
@@ -97,8 +106,8 @@ def run_threads():
 
 def logged_run(n = 65):
     pop = [[1] * i + [0] * (n - i) for i in range(n + 1)]
-    with open('log.txt', 'w') as logfile:
+    with open('waves.txt', 'w') as logfile:
         GSEMO(pop).run(logfile)
 
-
+logged_run(63)
 
