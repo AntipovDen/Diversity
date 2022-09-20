@@ -28,7 +28,7 @@ def animate_waves(n=33):
     with open("waves.txt", 'r') as f:
         log = [[int(i) for i in s.split()] for s in f.readlines()]
 
-    fig, ax = plt.subplots(nrows=2)
+    fig, ax = plt.subplots(ncols=2)
     x_dist_data = list(range(n))
     distances, = ax[0].plot(list(range(n)), list(range(n)), 'ro-')
 
@@ -64,7 +64,10 @@ def animate_waves(n=33):
 
         return distances, diversity
 
-    ani = FuncAnimation(fig, update, frames=log, init_func=init, blit=True, interval=10)
+    ani = FuncAnimation(fig, update, frames=log, init_func=init, blit=True, interval=1)
     plt.show()
 
 animate_waves(63)
+
+# TODO: see what if we have fair selection of the parent
+# TODO:

@@ -21,12 +21,12 @@ class GSEMO:
     def mutate(x):
         x1 = x.copy()
         n = len(x)
-        # i = randint(0, n - 1)
-        # x1[i] = 1 - x1[i]
-        # # bits_changed = 0subplots
-        for i in range(n):
-            if random() * n < 1:
-                x1[i] = 1 - x1[i]
+        i = randint(0, n - 1)
+        x1[i] = 1 - x1[i]
+        # bits_changed = 0subplots
+        # for i in range(n):
+        #     if random() * n < 1:
+        #         x1[i] = 1 - x1[i]
                 # bits_changed += 1
         return x1
 
